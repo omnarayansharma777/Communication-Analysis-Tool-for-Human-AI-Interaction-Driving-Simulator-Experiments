@@ -2,28 +2,29 @@ import os
 from extract_audio import extract_audio
 from transcribe import transcribe_audio
 from sentiment import analyze_sentiment
-import pandas as pd
 
-RAW_DIR = "data/raw/"
-PROCESSED_DIR = "data/processed/"
+RAW_FOLDER = "data/raw/"
+PROCESSED_FOLDER = "data/processed/"
 
 def process_all_videos():
-    for filename in os.listdir(RAW_DIR):
-        if filename.endswith(".mp4") or filename.endswith(".mkv"):
-            video_path = os.path.join(RAW_DIR, filename)
-            audio_path = os.path.join(PROCESSED_DIR, f"{filename}.wav")
-            csv_path = os.path.join(PROCESSED_DIR, f"transcription_{filename}.csv")
+    """Processes all videos in `raw/` one by one."""
+    video_files = [f for f in os.listdir(RAW_FOLDER) if f.endswith(".mp4")]
 
-            # Extract audio
-            extract_audio(video_path, audio_path)
-            
-            # Transcribe
-            segments = transcribe_audio(audio_path)
-            df = pd.DataFrame({"Timestamp": [s["start"] for s in segments], "Transcription": [s["text"] for s in segments]})
-            df.to_csv(csv_path, index=False)
+    for video in video_files:
+        video_path = os.path.join(RAW_FOLDER, video)
+        base_name = os.path.splitext(video)[0]
 
-            # Sentiment Analysis
-            analyze_sentiment(csv_path)
+        audio_path = os.path.join(PROCESSED_FOLDER, f"{base_name}.wav")
+        csv_transcription = os.path.join(PROCESSED_FOLDER, f"{base_name}_transcription.csv")
+        csv_final = os.path.join(PROCESSED_FOLDER, f"{base_name}_final.csv")
+
+        print(f"📢 Processing {video}...")
+
+        extract_audio(video_path, audio_path)
+        transcribe_audio(audio_path, csv_transcription)
+        analyze_sentiment(csv_transcription, csv_final)
+
+        print(f"✅ Finished processing: {video}")
 
 if __name__ == "__main__":
     process_all_videos()
