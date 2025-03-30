@@ -1,0 +1,8 @@
+ffmpeg-python
+pandas
+moviepy
+nltk
+openai-whisper
+matplotlib
+seaborn
+torch
