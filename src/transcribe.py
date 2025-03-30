@@ -1,46 +1,59 @@
 import whisper
 import pandas as pd
-import torch
-import os
+from nltk.sentiment import SentimentIntensityAnalyzer
 
-device = "cuda" if torch.cuda.is_available() else "cpu"
-model = whisper.load_model("medium").to(device)
+model = whisper.load_model("base")
 
 def transcribe_audio(audio_path, output_csv):
-    """Transcribes audio and saves as a single CSV with formatted timestamps."""
-    result = model.transcribe(audio_path, language="en", word_timestamps=True)
+    """Transcribes an audio file and processes it into 5-second segments."""
+    result = model.transcribe(audio_path)
+    segments = result["segments"]
 
-    # Process transcription into 5-second chunks
-    segments = []
-    temp_text = []
-    segment_start = None
+    grouped_segments = group_into_5s_segments(segments)
 
-    for segment in result["segments"]:
+    df = pd.DataFrame({
+        "Timestamp": [t for t, _ in grouped_segments],
+        "Transcription": [text for _, text in grouped_segments]
+    })
+    df.to_csv(output_csv, index=False)
+    print(f"✅ Transcription completed: {output_csv}")
+
+# Step 7: Process Transcription into 5-Second Segments
+def group_into_5s_segments(segments):
+    grouped_segments = []
+    current_segment_text = []
+    segment_start_time = None
+    segment_end_time = None
+
+    for segment in segments:
         start_time = round(segment["start"], 2)
         end_time = round(segment["end"], 2)
         text = segment["text"]
 
-        if segment_start is None:
-            segment_start = start_time  # Set the start of the first segment
+        # If this is the first segment or we exceeded 5 seconds
+        if segment_start_time is None:
+            segment_start_time = start_time
+            segment_end_time = min(segment_start_time + 5, end_time)  # Ensure max 5s window
+        
+        elif end_time - segment_start_time > 5:
+            # Save previous segment
+            grouped_segments.append((
+                f"{segment_start_time:.2f} - {segment_end_time:.2f}",
+                " ".join(current_segment_text)
+            ))
+            
+            # Start new segment
+            segment_start_time = end_time  # Start from this segment
+            segment_end_time = min(segment_start_time + 5, end_time)  # Max 5s
+            current_segment_text = []
 
-        temp_text.append(text)
+        current_segment_text.append(text)
 
-        # Start a new segment after 5 seconds
-        if end_time - segment_start >= 5:
-            segments.append((f"{segment_start:.2f} - {end_time:.2f}", " ".join(temp_text)))
-            temp_text = []
-            segment_start = end_time  # Reset segment start time
+    # Add last segment if it exists
+    if current_segment_text:
+        grouped_segments.append((
+            f"{segment_start_time:.2f} - {segment_end_time:.2f}",
+            " ".join(current_segment_text)
+        ))
 
-    # Add any remaining text
-    if temp_text:
-        segments.append((f"{segment_start:.2f} - {end_time:.2f}", " ".join(temp_text)))
-
-    # Save to CSV
-    df = pd.DataFrame(segments, columns=["Timestamp", "Transcription"])
-    df.to_csv(output_csv, index=False)
-    print(f"✅ Transcription saved: {output_csv}")
-
-if __name__ == "__main__":
-    audio_path = "data/processed/sample_audio.wav"
-    output_csv = "data/processed/sample_transcription.csv"
-    transcribe_audio(audio_path, output_csv)
+    return grouped_segments
