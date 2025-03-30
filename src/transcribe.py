@@ -22,37 +22,28 @@ def transcribe_audio(audio_path, output_csv):
 def group_into_5s_segments(segments):
     grouped_segments = []
     current_segment_text = []
-    segment_start_time = None
-    segment_end_time = None
-
+    segment_start_time = 0
     for segment in segments:
         start_time = round(segment["start"], 2)
         end_time = round(segment["end"], 2)
         text = segment["text"]
 
-        # If this is the first segment or we exceeded 5 seconds
-        if segment_start_time is None:
-            segment_start_time = start_time
-            segment_end_time = min(segment_start_time + 5, end_time)  # Ensure max 5s window
-        
-        elif end_time - segment_start_time > 5:
-            # Save previous segment
-            grouped_segments.append((
-                f"{segment_start_time:.2f} - {segment_end_time:.2f}",
-                " ".join(current_segment_text)
-            ))
-            
-            # Start new segment
-            segment_start_time = end_time  # Start from this segment
-            segment_end_time = min(segment_start_time + 5, end_time)  # Max 5s
+        # If the current segment exceeds 5 seconds, start a new one
+        if start_time - segment_start_time >= 5:
+            if current_segment_text:
+                grouped_segments.append((
+                    f"{segment_start_time}s - {segment_start_time+5}s",
+                    " ".join(current_segment_text)
+                ))
             current_segment_text = []
+            segment_start_time = start_time
 
         current_segment_text.append(text)
 
-    # Add last segment if it exists
+    # Add the last segment
     if current_segment_text:
         grouped_segments.append((
-            f"{segment_start_time:.2f} - {segment_end_time:.2f}",
+            f"{segment_start_time}s - {segment_start_time+5}s",
             " ".join(current_segment_text)
         ))
 
