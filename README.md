@@ -29,15 +29,25 @@ communication-analysis/
 │   ├── process_all.py     # Processes all videos in `raw/`
 │── requirements.txt       # Dependencies
 │── README.md              # Setup and Usage Guide
+│──cumulative_sentiment_trend.png  # these images will be created later 
+│──sentiment_distribution.png
+│──word_count_histogram.png  
 ```
 
 ---
 
-## **🚀 Setup & Installation**
+## **🚀 Setup & Installation[ Only Colab with GPU ]** 
+
+```
+!git clone https://github.com/omnarayansharma777/Communication-Analysis-Tool-for-Human-AI-Interaction-Driving-Simulator-Experiments.git
+
+```
 ### **1️⃣ Install Required Dependencies**
 Run the following command to install all necessary Python libraries:
 ```bash
-pip install -r requirements.txt
+!cd Communication-Analysis-Tool-for-Human-AI-Interaction-Driving-Simulator-Experiments
+!pip install -r "/content/Communication-Analysis-Tool-for-Human-AI-Interaction-Driving-Simulator-Experiments/requirements.txt"
+
 ```
 
 ### **2️⃣ Add Your Video Files**
@@ -46,7 +56,7 @@ Place all video files in the `data/raw/` directory.
 ### **3️⃣ Run the Processing Pipeline**
 Run the following command to process **all videos** in the `raw/` folder:
 ```bash
-python src/process_all.py
+!python "/content/Communication-Analysis-Tool-for-Human-AI-Interaction-Driving-Simulator-Experiments/src/process_all.py"
 ```
 This will:
 - Extract audio from each video.
@@ -57,9 +67,22 @@ This will:
 ### **4️⃣ Visualize Sentiment Trends**
 To analyze a specific processed file, run:
 ```bash
-python src/visualize.py data/processed/<your_video_filename>.csv
+!python /content/Communication-Analysis-Tool-for-Human-AI-Interaction-Driving-Simulator-Experiments/src/visualize.py '/content/Communication-Analysis-Tool-for-Human-AI-Interaction-Driving-Simulator-Experiments/data/processed/<your_video_filename>.csv'
 ```
-This will generate a **cumulative sentiment trend graph**.
+
+This will generate a
+**word_count_histogram** , in each window ~5 seconds how many words 
+
+![word_count_histogram (2)](https://github.com/user-attachments/assets/d6baea0c-d236-4ebd-bea6-47d6e1191cf6)
+
+**cumulative sentiment trend graph** ,showing sentiment distribution over time.
+
+![cumulative_sentiment_trend (4)](https://github.com/user-attachments/assets/7ce5aac1-1065-4eee-8d60-34330c8d555f)
+
+**sentiment_distribution** , total number of positive , negative, neutral sentiment
+
+![sentiment_distribution (4)](https://github.com/user-attachments/assets/d5a80f08-77f6-4b98-86cd-17507c0d7c8a)
+
 
 ---
 
@@ -81,7 +104,7 @@ A **cumulative sentiment trend graph** will be generated, showing sentiment dist
 - Uses `ffmpeg` to extract high-quality WAV audio from video.
 
 ### **2️⃣ Speech-to-Text Transcription**
-- Uses OpenAI's **Whisper (Medium model)** for accurate transcription.
+- Uses OpenAI's **Whisper (Medium model)** for accurate transcription. 
 - **Supports multiple speakers** and noisy environments.
 
 ### **3️⃣ Sentiment Analysis**
@@ -91,18 +114,5 @@ A **cumulative sentiment trend graph** will be generated, showing sentiment dist
 ### **4️⃣ Visualization**
 - **Histogram of word counts per 5-second interval**.
 - **Cumulative sentiment trend over time**.
-
----
-
-## **📌 Example Run**
-### **Processing a Video**
-```bash
-python src/process_all.py
-```
-
-### **Generating Graphs for a Processed File**
-```bash
-python src/visualize.py data/processed/sample_video.csv
-```
 
 ---
