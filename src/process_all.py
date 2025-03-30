@@ -4,7 +4,7 @@ from transcribe import transcribe_audio
 from sentiment import analyze_sentiment
 
 RAW_FOLDER = "/content/Communication-Analysis-Tool-for-Human-AI-Interaction-Driving-Simulator-Experiments/data/raw/"
-PROCESSED_FOLDER = "/content/Communication-Analysis-Tool-for-Human-AI-Interaction-Driving-Simulator-Experiments/processed/"
+PROCESSED_FOLDER = "/content/Communication-Analysis-Tool-for-Human-AI-Interaction-Driving-Simulator-Experiments/data/processed/"
 
 def process_all_videos():
     """Processes all videos in `raw/` one by one."""
