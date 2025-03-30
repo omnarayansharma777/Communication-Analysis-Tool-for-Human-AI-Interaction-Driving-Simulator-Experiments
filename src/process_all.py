@@ -23,6 +23,9 @@ def process_all_videos():
         extract_audio(video_path, audio_path)
         transcribe_audio(audio_path, csv_transcription)
         analyze_sentiment(csv_transcription, csv_final)
+        if os.path.exists(audio_path):
+            os.remove(audio_path)
+            print(f"🗑️ Deleted intermediate file: {audio_path}")
         if os.path.exists(csv_transcription):
             os.remove(csv_transcription)
             print(f"🗑️ Deleted intermediate file: {csv_transcription}")
