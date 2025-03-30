@@ -35,11 +35,6 @@ def transcribe_audio(audio_path, output_csv):
     if temp_text:
         segments.append((f"{segment_start:.2f} - {end_time:.2f}", " ".join(temp_text)))
 
-    # deleting audio file
-    if os.path.exists(audio_path):
-            os.remove(audio_path)
-            print(f"🗑️ Deleted intermediate file: {audio_path}")
-
     # Save to CSV
     df = pd.DataFrame(segments, columns=["Timestamp", "Transcription"])
     df.to_csv(output_csv, index=False)
