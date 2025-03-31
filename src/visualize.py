@@ -77,16 +77,16 @@ def plot_cumulative_sentiment_trend(df):
     plt.show()
 
 def main():
-    # Check if the correct number of arguments is provided
+    # Checking  if the correct number of arguments is provided
     if len(sys.argv) != 2:
         print("Usage: python app.py <filename.csv>")
         print("Example: python app.py data.csv")
         sys.exit(1)
     
-    # Get the filename from command-line argument
+    #  filename from command-line argument
     filename = sys.argv[1]
     
-    # Construct the full path based on whether a relative or absolute path was provided
+    # Construct the full path 
     if os.path.isabs(filename):
         file_path = filename
     else:
