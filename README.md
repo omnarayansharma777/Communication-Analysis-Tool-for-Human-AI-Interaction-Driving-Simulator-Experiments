@@ -20,10 +20,10 @@ This project processes video files containing human-to-human communication data,
 communication-analysis/
 │── data/
 │   ├── raw/           # Store uploaded videos
-│   ├── processed/     # Store generated CSVs (transcriptions & sentiment analysis)
+│   ├── processed/     # Store generated CSVs 
 │── src/
 │   ├── extract_audio.py   # Extracts audio from videos
-│   ├── transcribe.py      # Transcribes audio using Whisper
+│   ├── transcribe.py      # Transcribes audio using Whisper 
 │   ├── sentiment.py       # Performs sentiment analysis (no external API)
 │   ├── visualize.py       # Generates graphs
 │   ├── process_all.py     # Processes all videos in `raw/`
@@ -95,8 +95,6 @@ Each processed video will generate a CSV file in `data/processed/` with the foll
 | 5-10 sec  | I don't agree with this... | Negative |
 | 10-15 sec | Let's find a solution. | Neutral |
 
-A **cumulative sentiment trend graph** will be generated, showing sentiment distribution over time.
-
 ---
 
 ## **🛠️ How It Works**
@@ -114,5 +112,5 @@ A **cumulative sentiment trend graph** will be generated, showing sentiment dist
 ### **4️⃣ Visualization**
 - **Histogram of word counts per 5-second interval**.
 - **Cumulative sentiment trend over time**.
-
+- **sentiment_distribution**
 ---
