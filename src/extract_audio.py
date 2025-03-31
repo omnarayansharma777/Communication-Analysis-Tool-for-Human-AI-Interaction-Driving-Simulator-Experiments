@@ -9,6 +9,4 @@ def extract_audio(video_path, output_audio_path):
     return output_audio_path
 
 if __name__ == "__main__":
-    video_path = "data/raw/sample_video.mp4"  # Change this for testing
-    output_audio_path = "data/processed/sample_audio.wav"
     extract_audio(video_path, output_audio_path)
