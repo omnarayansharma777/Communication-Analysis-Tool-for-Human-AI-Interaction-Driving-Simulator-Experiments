@@ -3,7 +3,7 @@ from extract_audio import extract_audio
 from transcribe import transcribe_audio
 from sentiment import analyze_sentiment
 
-# Define directories
+# directories
 
 RAW_FOLDER = "/content/Communication-Analysis-Tool-for-Human-AI-Interaction-Driving-Simulator-Experiments/data/raw/"
 PROCESSED_FOLDER = "/content/Communication-Analysis-Tool-for-Human-AI-Interaction-Driving-Simulator-Experiments/data/processed/"
