@@ -20,6 +20,4 @@ def analyze_sentiment(input_csv, output_csv):
     print(f"✅ Sentiment analysis completed: {output_csv}")
 
 if __name__ == "__main__":
-    input_csv = "data/processed/sample_transcription.csv"
-    output_csv = "data/processed/sample_final.csv"
     analyze_sentiment(input_csv, output_csv)
