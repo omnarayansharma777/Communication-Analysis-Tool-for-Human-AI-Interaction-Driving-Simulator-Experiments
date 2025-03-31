@@ -18,7 +18,7 @@ def transcribe_audio(audio_path, output_csv):
     df.to_csv(output_csv, index=False)
     print(f"✅ Transcription completed: {output_csv}")
 
-# Step 7: Process Transcription into 5-Second Segments
+# Process Transcription into 5-Second Segments
 def group_into_5s_segments(segments):
     grouped_segments = []
     current_segment_text = []
